@@ -1,0 +1,119 @@
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+</head>
+<div id="container">
+    <div class="row" v-for="(row, i) in displayBoard">
+        <div class="col-xs-2 text-center" v-on:click="select(i, j)" v-for="(image, j) in row">
+            {{image}}
+        </div>
+    </div>
+    <button v-on:click="generateBoard()">Click me</button>
+</div>
+<script>
+    var vm = new Vue({
+        el: '#container',
+        data: {
+            board: [[1, 1, 1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1, 1, 1]],
+            displayBoard: [[4, 4, 4, 4, 4], [4, 4, 4, 4, 4], [4, 4, 4, 4, 4], [4, 4, 4, 4, 4], [4, 4, 4, 4, 4]],
+            bombCount: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0]],
+            totalCount: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0]],
+            roundScore: 0,
+            totalScore: 0,
+            BOMBS: [0, 6, 7, 8, 9, 10, 10, 10, 10],
+            level: 1,
+            MULTIPLIERS: [24, 54, 108, 216, 384, 648, 1296, 2600, 6000],
+            cardsFlipped: 0,
+            toAdd: { size: 0, head: null },
+        },
+        methods: {
+            //add new item on top of stack
+            push: function (stack, value) {
+                var toPush = { value: value, link: null };
+                toPush.link = stack.head;
+                stack.head = toPush;
+                stack.size++;
+            },
+            //remove lead item from stack
+            pop: function (stack) {
+                var toReturn = stack.head.value;
+                stack.head = stack.head.link;
+                stack.size--;
+                return toReturn;
+            },
+            /**
+             * generate multipliers to add into board
+             * @param {int} level level to generate total score for
+             * @param {stack} stack stack to fill multipliers into
+             */
+            generateMultipliers: function (level, stack) {
+                while (stack.size > 0) {
+                    this.pop(stack);
+                }
+                //Actual value, used in case value is short of bounds
+                var actual = 1;
+                var total = this.MULTIPLIERS[level - 1];
+                total += (this.MULTIPLIERS[level] - this.MULTIPLIERS[level - 1]) * Math.random();
+                //Check if less than 2 to avoid going too high (Can result in going too low)
+                while (total > 2) {
+                    if ((total / 3) < 1) {
+                        this.push(stack, 2);
+                        actual *= 2;
+                        total /= 2;
+                    } else {
+                        if (Math.random() > .5) {
+                            this.push(stack, 3);
+                            actual *= 3;
+                            total /= 3;
+                        } else {
+                            this.push(stack, 2);
+                            actual *= 2;
+                            total /= 2;
+                        }
+                    }
+                }
+                //Compensate if too low
+                if (actual < this.MULTIPLIERS[level - 1]) {
+                    this.push(stack, 2);
+                }
+            },
+            fillBombs: function (board) {
+                var toFill = this.BOMBS[this.level];
+                while (toFill > 0) {
+                    var i = Math.floor(Math.random() * 5);
+                    var j = Math.floor(Math.random() * 5);
+                    if (board[i][j] == 1) {
+                        board[i][j] = 0;
+                        toFill--;
+                    }
+                }
+            },
+            fillMultipliers: function (board, stack) {
+                while (stack.size > 0) {
+                    var didSet = true;
+                    var toAdd = this.pop(stack);
+                    while (didSet) {
+                        var i = Math.floor(Math.random() * 5);
+                        var j = Math.floor(Math.random() * 5);
+                        if (board[i][j] == 1) {
+                            board[i][j] = toAdd;
+                            didSet = false;
+                        }
+                    }
+                }
+            },
+            generateBoard: function () {
+                this.fillBombs(this.board);
+                this.generateMultipliers(this.level, this.toAdd);
+                this.fillMultipliers(this.board, this.toAdd);
+                console.log(this.board);
+                this.board = this.board;
+            },
+            select: function (i, j) {
+                this.displayBoard[i][j] = this.board[i][j];
+                console.log(this.board[i][j]);
+            }
+        },
+    });
+</script>
