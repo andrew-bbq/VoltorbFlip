@@ -14,6 +14,7 @@ var vm = new Vue({
         maxValue: 0,
         toAdd: { size: 0, head: null },
         gameState: 0,
+        endText: "",
     },
     methods: {
         //add new item on top of stack
@@ -94,6 +95,7 @@ var vm = new Vue({
             }
         },
         generateBoard: function () {
+            this.endText = "";
             this.gameState = 1;
             this.cardsFlipped = 0;
             this.cleanBoard(this.displayBoard, 4);
@@ -126,6 +128,7 @@ var vm = new Vue({
                     if (this.cardsFlipped < this.level) {
                         this.level = this.cardsFlipped;
                     }
+                    this.endText = "Oh no! You get 0 coins!"
                 }
                 this.cardsFlipped++;
                 if (this.roundScore == this.maxValue) {
@@ -133,6 +136,7 @@ var vm = new Vue({
                     this.roundScore = 0;
                     this.level++;
                     this.gameState = 0;
+                    this.endText = "All 2's and 3's found, advancing to next level!"
                 }
                 this.displayBoard[i][j] = cellValue;
                 //force display to update

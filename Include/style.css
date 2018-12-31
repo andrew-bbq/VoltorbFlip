@@ -24,10 +24,6 @@
 }
 
 
-.instructions {
-    padding-left: 5%;
-    padding-right: 5%;
-}
 
 .push-down {
     line-height: 70px;
@@ -44,7 +40,7 @@
     font-size: 15px;
 }
 
-.container {
+body {
     background-color: lightgreen;
 }
 
@@ -66,4 +62,11 @@ h2 {
 
 h3 {
     font-family: "Aleo";
+}
+
+.popup {
+    font-family: "Aleo";
+    font-size: 25px;
+    background-color: white;
+    border: 2px solid gray;
 }
