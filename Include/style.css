@@ -1,0 +1,69 @@
+.top-margin {
+    margin-top: 1em;
+}
+
+.top-padding {
+    padding-top: 1em;
+}
+
+.box {
+    color: black;
+    margin: 10px 10px 10px 10px;
+    background-color: rosybrown;
+    width:60px;
+    height:60px;
+    border: 2px solid black;
+    outline-style: solid;
+    outline-color: white;
+    font-family: 'Concert One';
+}
+
+.mainbox {
+    line-height:55px;
+    font-size: 30px;
+}
+
+
+.instructions {
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.push-down {
+    line-height: 70px;
+}
+
+.instruction-text {
+    font-size: 30px;
+    font-family: 'Concert One';
+    color: white;
+}
+
+.countbox {
+    padding-top: 5px;
+    font-size: 15px;
+}
+
+.container {
+    background-color: lightgreen;
+}
+
+.big-torb {
+    margin-top:10px;
+    height: 35px;
+    width: 35px;
+}
+
+h1 {
+    font-family: "Staatliches";
+    font-size: 76px;
+}
+h2 {
+    font-family: "Staatliches";
+    font-size: 50px;
+    margin-top: -20px;
+}
+
+h3 {
+    font-family: "Aleo";
+}
